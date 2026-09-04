@@ -47,7 +47,7 @@ public class PaymentCustomRepositoryImpl implements PaymentCustomRepository {
                                 .and("timestamp").gte(startDate).lte(endDate)
                 ),
                 Aggregation.group()
-                        .sum("payment_amount").as("totalAmount")
+                        .sum("paymentAmount").as("totalAmount")
                         .count().as("paymentsCount")
         );
 
@@ -64,7 +64,7 @@ public class PaymentCustomRepositoryImpl implements PaymentCustomRepository {
                         Criteria.where("timestamp").gte(startDate).lte(endDate)
                 ),
                 Aggregation.group()
-                        .sum("payment_amount").as("totalAmount")
+                        .sum("paymentAmount").as("totalAmount")
                         .count().as("paymentsCount")
         );
 
