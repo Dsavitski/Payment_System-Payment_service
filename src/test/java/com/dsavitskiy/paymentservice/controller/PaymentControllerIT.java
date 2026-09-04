@@ -218,7 +218,7 @@ public class PaymentControllerIT {
                         .with(userJwt()))
                 .andExpect(status().isForbidden());
     }
-    
+
 
     @Test
     void getAllTotalAmount_WithUserRole_ShouldReturn403() throws Exception {
