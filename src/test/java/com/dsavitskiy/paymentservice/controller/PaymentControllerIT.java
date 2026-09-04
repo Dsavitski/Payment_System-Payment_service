@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -153,7 +154,6 @@ public class PaymentControllerIT {
                 .andExpect(status().isUnauthorized());
     }
 
-
     @Test
     void getPaymentsByUser_WhenUsersMatch_ShouldReturn200() throws Exception {
         savePayment(userId, 1L, PaymentStatus.SUCCESS, "100.00");
@@ -262,16 +262,22 @@ public class PaymentControllerIT {
                 .andExpect(status().isForbidden());
     }
 
+    // ==================== Helpers ====================
+
     private RequestPostProcessor userJwt() {
-        return jwt().jwt(j -> j
-                .subject(userId.toString())
-                .claim("realm_access", Map.of("roles", List.of("USER"))));
+        return jwt()
+                .jwt(j -> j
+                        .subject(userId.toString())
+                        .claim("realm_access", Map.of("roles", List.of("USER"))))
+                .authorities(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     private RequestPostProcessor adminJwt() {
-        return jwt().jwt(j -> j
-                .subject(adminUserId.toString())
-                .claim("realm_access", Map.of("roles", List.of("ADMIN"))));
+        return jwt()
+                .jwt(j -> j
+                        .subject(adminUserId.toString())
+                        .claim("realm_access", Map.of("roles", List.of("ADMIN"))))
+                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     private void savePayment(UUID userId, Long orderId, PaymentStatus status, String amount) {
