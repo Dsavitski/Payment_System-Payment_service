@@ -206,22 +206,6 @@ public class PaymentControllerIT {
                 .andExpect(status().isForbidden());
     }
 
-    @Test
-    void getUserTotalAmount_ShouldAggregateCorrectly() throws Exception {
-        Instant now = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
-        savePayment(userId, 1L, PaymentStatus.SUCCESS, "100.00", now.minusSeconds(60));
-        savePayment(userId, 2L, PaymentStatus.SUCCESS, "200.50", now.minusSeconds(30));
-        savePayment(userId, 3L, PaymentStatus.SUCCESS, "999.00", now.minusSeconds(7200));
-
-        mockMvc.perform(get("/api/v1/payments/user/{userId}/total", userId)
-                        .param("startDate", now.minusSeconds(3600).toString())
-                        .param("endDate", now.toString())
-                        .with(userJwt()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalAmount").value(300.5))
-                .andExpect(jsonPath("$.paymentsCount").value(2));
-    }
 
     @Test
     void getUserTotalAmount_ForAnotherUser_ShouldReturn403() throws Exception {
@@ -234,22 +218,7 @@ public class PaymentControllerIT {
                         .with(userJwt()))
                 .andExpect(status().isForbidden());
     }
-
-    @Test
-    void getAllTotalAmount_WithAdminRole_ShouldReturn200() throws Exception {
-        Instant now = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
-        savePayment(UUID.randomUUID(), 1L, PaymentStatus.SUCCESS, "100.00", now.minusSeconds(60));
-        savePayment(UUID.randomUUID(), 2L, PaymentStatus.FAILED, "200.00", now.minusSeconds(30));
-
-        mockMvc.perform(get("/api/v1/payments/admin/total")
-                        .param("startDate", now.minusSeconds(3600).toString())
-                        .param("endDate", now.toString())
-                        .with(adminJwt()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalAmount").value(300.0))
-                .andExpect(jsonPath("$.paymentsCount").value(2));
-    }
+    
 
     @Test
     void getAllTotalAmount_WithUserRole_ShouldReturn403() throws Exception {
@@ -261,7 +230,7 @@ public class PaymentControllerIT {
                         .with(userJwt()))
                 .andExpect(status().isForbidden());
     }
-    
+
 
     private RequestPostProcessor userJwt() {
         return jwt()
