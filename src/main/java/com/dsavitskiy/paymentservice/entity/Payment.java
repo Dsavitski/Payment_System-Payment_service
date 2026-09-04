@@ -30,5 +30,7 @@ public class Payment {
 
     private PaymentStatus status;
     private Instant timestamp;
+
+    @Field(name = "payment_amount")
     private BigDecimal paymentAmount;
 }
