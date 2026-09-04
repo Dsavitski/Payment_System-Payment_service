@@ -42,7 +42,6 @@ public class PaymentService {
         log.debug("Getting random number: {}", randomNum);
 
         payment.setStatus(randomNum % 2 == 0 ? PaymentStatus.SUCCESS : PaymentStatus.FAILED);
-
         Payment savedPayment = repository.save(payment);
         log.info("Payment saved with ID: {} and status: {}", savedPayment.getId(), savedPayment.getStatus());
 

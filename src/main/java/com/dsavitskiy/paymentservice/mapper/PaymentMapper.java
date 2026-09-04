@@ -15,6 +15,7 @@ public interface PaymentMapper {
 
     List<PaymentResponseDto> toListDto(List<Payment> payments);
 
+    @Mapping(target = "userId", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status" , constant = "PENDING")
     @Mapping(target = "timestamp", expression = "java(java.time.Instant.now())")

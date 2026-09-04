@@ -12,5 +12,6 @@ public record PaymentCreatedEvent(
         Long orderId,
         BigDecimal paymentAmount,
         PaymentStatus status,
-        Instant timestamp
-) {}
+        Instant timestamp) {
+
+}
