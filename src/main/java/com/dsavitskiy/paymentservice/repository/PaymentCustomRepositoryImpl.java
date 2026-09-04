@@ -52,7 +52,7 @@ public class PaymentCustomRepositoryImpl implements PaymentCustomRepository {
         );
 
         AggregationResults<PaymentSumResponseDto> results =
-                mongoTemplate.aggregate(aggregation, "payments", PaymentSumResponseDto.class);
+                mongoTemplate.aggregate(aggregation, Payment.class, PaymentSumResponseDto.class);
 
         return results.getUniqueMappedResult();
     }
@@ -69,7 +69,7 @@ public class PaymentCustomRepositoryImpl implements PaymentCustomRepository {
         );
 
         AggregationResults<PaymentSumResponseDto> results =
-                mongoTemplate.aggregate(aggregation, "payments", PaymentSumResponseDto.class);
+                mongoTemplate.aggregate(aggregation, Payment.class, PaymentSumResponseDto.class);
 
         return results.getUniqueMappedResult();
     }

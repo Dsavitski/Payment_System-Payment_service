@@ -261,8 +261,7 @@ public class PaymentControllerIT {
                         .with(userJwt()))
                 .andExpect(status().isForbidden());
     }
-
-    // ==================== Helpers ====================
+    
 
     private RequestPostProcessor userJwt() {
         return jwt()
