@@ -1,12 +1,10 @@
 package com.dsavitskiy.paymentservice.client;
 
-import com.dsavitskiy.paymentservice.exception.ExternalApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -14,21 +12,19 @@ import java.util.Map;
 public class RandomNumberClient {
 
     private final RestTemplate restTemplate;
-    private static final String API_URL = "https://random-data-api.com/api/v2/numbers";
+
+    @Value("${external.api.random-number.url}")
+    private String apiUrl;
 
     public int getRandomNumber() {
+        log.debug("Fetching random number from: {}", apiUrl);
         try {
-            Map<String, Object> response = restTemplate.getForObject(API_URL, Map.class);
-
-            if (response != null && response.containsKey("value")) {
-                int number = ((Number) response.get("value")).intValue();
-                log.info("Getting random number is successful: {}", number);
-                return number;
-            }
-            throw new ExternalApiException("Uncorrect format response", null);
+            Integer number = restTemplate.getForObject(apiUrl, Integer.class);
+            return number != null ? number : 0;
         } catch (Exception e) {
-            log.info("Error calling external API: {}", e.getMessage());
-            throw new ExternalApiException("External API error", e);
+            log.error("Failed to fetch random number from {}", apiUrl, e);
+            throw new com.dsavitskiy.paymentservice.exception.ExternalApiException(
+                    "External API unavailable: ", e);
         }
     }
 }
