@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-payments.yaml
+  - include:
+      file: db/changelog/changeset/create-idx-order_id.yaml
+  - include:
+      file: db/changelog/changeset/create-idx-user_id-timestamp.yaml
