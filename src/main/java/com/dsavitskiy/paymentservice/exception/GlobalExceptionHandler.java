@@ -78,6 +78,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(error);
     }
 
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ErrorResponse> handleSecurityException(SecurityException ex) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+
+        ErrorResponse error = new ErrorResponse(
+                Instant.now(),
+                status.value(),
+                status.getReasonPhrase(),
+                "Authentication failed",
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(status).body(error);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
