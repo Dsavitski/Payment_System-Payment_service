@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-order-id
+      author: Savitskiy
+      changes:
+        - createIndex:
+            collectionName: payments
+            keys:
+              order_id: 1
+            options:
+              unique: true
+              name: idx_payments_order_id
+              background: true

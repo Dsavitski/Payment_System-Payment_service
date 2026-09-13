@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-payments-collection
+      author: Savitskiy
+      changes:
+        -  createCollection:
+             collectionName: payments

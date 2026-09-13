@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-user-id-timestamp
+      author: Savitskiy
+      changes:
+        - createIndex:
+            collectionName: payments
+            keys:
+              user_id: 1
+              timestamp: -1
+            options:
+              name: idx_payments_user_id_timestamp
+              background: true
